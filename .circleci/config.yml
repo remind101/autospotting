@@ -1,0 +1,19 @@
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+  
+    docker:
+      - image: circleci/golang:1.9
+      
+    #working_directory: /go/src/github.com/remind101/autospotting
+    working_directory: /go/src/github.com/cristim/autospotting
+    
+    steps:
+      - checkout
+      - run: make test
+      - run: make build
+      - run: zip lambda-autospotting-$(date +"%Y-%m-%d").zip autospotting
+      - run: mkdir artifacts && mv autospotting artifacts && mv *.zip artifacts
+      - store_artifacts:
+          path: /go/src/github.com/cristim/autospotting/artifacts
